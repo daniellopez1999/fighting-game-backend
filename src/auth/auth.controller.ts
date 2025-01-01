@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersService } from './auth.service';
 import { FindUserDto } from './dto/find-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ConfirmPasswordDto } from './dto/confirm-password.dto';

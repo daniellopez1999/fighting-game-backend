@@ -4,10 +4,10 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
 import { UsersEntity } from './entities/user.entity';
-import { UsersModule } from './users/users.module';
 import * as dotenv from 'dotenv';
 import { UserEquippedEntity } from './entities/user-equiped.entity';
 import { DefenseEntity } from './entities/defense.entity';
+import { UsersModule } from './auth/auth.module';
 dotenv.config();
 @Module({
   imports: [
@@ -19,7 +19,7 @@ dotenv.config();
       username: `${process.env.DB_PG_USERNAME}`,
       password: `${process.env.DB_PG_PASSWORD}`,
       database: `${process.env.DB_PG_DATABASE_NAME}`,
-      entities: [UsersEntity],
+      entities: [UsersEntity, UserEquippedEntity, DefenseEntity],
       synchronize: false,
     }),
     TypeOrmModule.forFeature([UsersEntity, UserEquippedEntity, DefenseEntity]),

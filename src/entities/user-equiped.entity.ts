@@ -1,5 +1,5 @@
 import { DefenseEntity } from './defense.entity';
-import { Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { UsersEntity } from './user.entity';
 
 @Entity('user_equiped')
@@ -7,11 +7,13 @@ export class UserEquippedEntity {
   @PrimaryGeneratedColumn('uuid')
   user_equiped_id: string;
 
-  @ManyToOne(() => UsersEntity, (user) => user.user_id)
+  @ManyToOne(() => UsersEntity)
+  @JoinColumn({ name: 'user_id' })
   user: UsersEntity;
 
-  @ManyToOne(() => DefenseEntity, (defense) => defense.defense_id, {
+  @ManyToOne(() => DefenseEntity, {
     nullable: true,
   })
+  @JoinColumn({ name: 'defense_id' })
   defense: DefenseEntity;
 }

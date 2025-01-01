@@ -19,11 +19,14 @@ import * as bcrypt from 'bcrypt';
 import * as CONFIG_FILE from './config.json';
 import { LoginUserDto } from './dto/login.dto';
 import { ShortUserResponse } from './utils/user';
+import { UserEquippedEntity } from 'src/entities/user-equiped.entity';
+import { UserEquipRepository } from 'src/repositories/user-equip.repository';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly userRepository: UsersRepository,
+    private readonly userEquipRepository: UserEquipRepository,
     private dataSource: DataSource,
   ) {}
   async create(createUserDto: CreateUserDto) {
@@ -42,6 +45,7 @@ export class UsersService {
       }
 
       const user = await this.userRepository.createUser(createUserDto);
+      await this.userEquipRepository.createUserEquip(user.user_id);
 
       const temporalURL = generateUrlWithEncryptedToken(user.user_id);
 
