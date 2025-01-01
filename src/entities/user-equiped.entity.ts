@@ -10,6 +10,8 @@ export class UserEquippedEntity {
   @ManyToOne(() => UserEntity, (user) => user.user_id)
   user: UserEntity;
 
-  @ManyToOne(() => DefenseEntity, (defense) => defense.defense_id)
+  @ManyToOne(() => DefenseEntity, (defense) => defense.defense_id, {
+    nullable: true,
+  })
   defense: DefenseEntity;
 }
