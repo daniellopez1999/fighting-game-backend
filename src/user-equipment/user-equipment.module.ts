@@ -7,12 +7,18 @@ import { UsersRepository } from 'src/repositories/user.repository';
 import { UserEquipRepository } from 'src/repositories/user-equip.repository';
 import { UserEquipmentController } from './user-equipment.controller';
 import { UserEquipmentService } from './user-equipment.service';
+import { DefenseRepository } from 'src/repositories/defense.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UsersEntity, UserEquippedEntity, DefenseEntity]),
   ],
   controllers: [UserEquipmentController],
-  providers: [UserEquipmentService, UsersRepository, UserEquipRepository],
+  providers: [
+    UserEquipmentService,
+    UsersRepository,
+    UserEquipRepository,
+    DefenseRepository,
+  ],
 })
 export class UserEquipmentModule {}

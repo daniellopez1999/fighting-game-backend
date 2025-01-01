@@ -39,6 +39,13 @@ export class UserEquipRepository {
     ]);
   }
 
+  async findUserEquipmentByID(user_equiped_id: string) {
+    return await this.userEquipRepository.findOne({
+      where: { user_equiped_id },
+      relations: ['defense'],
+    });
+  }
+
   async updateUserEquip(userEquip: UserEquippedEntity) {
     return await this.userEquipRepository.save(userEquip);
   }

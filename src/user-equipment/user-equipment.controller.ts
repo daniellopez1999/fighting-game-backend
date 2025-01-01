@@ -1,14 +1,16 @@
 import { Controller, Get, Post, Body, Param, Patch } from '@nestjs/common';
-import { UpdateUserEquipment } from './dto/update-user-equipment.dto';
+import { UpdateUserEquipmentDto } from './dto/update-user-equipment.dto';
 import { UserEquipmentService } from './user-equipment.service';
 
 @Controller('user-equipment')
 export class UserEquipmentController {
   constructor(private readonly userEquipmentService: UserEquipmentService) {}
 
-  @Patch()
-  async updateUserEquipment(@Body() updateUserEquipment: UpdateUserEquipment) {
-    return this.userEquipmentService.update();
+  @Patch('update-defense')
+  async updateUserEquipment(
+    @Body() updateUserEquipment: UpdateUserEquipmentDto,
+  ) {
+    return this.userEquipmentService.updateUserEquipment(updateUserEquipment);
   }
 
   @Get('user-id/:id')
