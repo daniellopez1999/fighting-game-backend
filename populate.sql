@@ -79,3 +79,51 @@ WITH inserted_defense AS (
 INSERT INTO user_equiped (user_id, defense_id)
 SELECT inserted_user.user_id, inserted_defense.defense_id
 FROM inserted_user, inserted_defense;
+
+
+
+
+-- 1. Tabla de niveles (levels)
+CREATE TABLE levels (
+  level_id UUID PRIMARY KEY,       -- Identificador único del nivel
+  name VARCHAR(255),               -- Nombre del nivel
+  difficulty VARCHAR(20),          -- Dificultad del nivel (easy, medium, hard)
+  CONSTRAINT difficulty_check CHECK (difficulty IN ('easy', 'medium', 'hard'))
+);
+
+-- 2. Tabla de mobs
+CREATE TABLE mobs (
+  mob_id UUID PRIMARY KEY,         -- Identificador único del mob
+  name VARCHAR(255),               -- Nombre del mob
+  health INT,                      -- Salud del mob
+  damage INT                       -- Daño del mob
+);
+
+-- 3. Relación entre niveles y mobs (tabla intermedia)
+CREATE TABLE level_mobs (
+  level_id UUID REFERENCES levels(level_id) ON DELETE CASCADE,
+  mob_id UUID REFERENCES mobs(mob_id) ON DELETE CASCADE,
+  PRIMARY KEY (level_id, mob_id)
+);
+
+
+-- Insertar niveles
+INSERT INTO levels (level_id, name, difficulty)
+VALUES
+  ('e86b6ed2-c317-47e3-b43b-4bb89c3f3dbb', 'Forest of Beginnings', 'easy'),
+  ('a1a1b95f-2ef3-4529-9db5-7d531ed2c5fe', 'Cave of Despair', 'medium'),
+  ('c7b740e4-0ff9-4635-bd82-dc45128ed233', 'Dragon Lair', 'hard');
+
+-- Insertar mobs
+INSERT INTO mobs (mob_id, name, health, damage)
+VALUES
+  ('f9db3037-2e0a-4e72-bc8f-fb325ee1d09b', 'Goblin', 30, 5),
+  ('eb92b764-13bb-4199-b5ac-e51d395b2a75', 'Troll', 100, 15),
+  ('26ff3c01-bfdd-47a0-bc0a-87096b5435f7', 'Dragon', 500, 50);
+
+-- Relacionar niveles con mobs
+INSERT INTO level_mobs (level_id, mob_id)
+VALUES
+  ('e86b6ed2-c317-47e3-b43b-4bb89c3f3dbb', 'f9db3037-2e0a-4e72-bc8f-fb325ee1d09b'), -- Goblin en el nivel 'Forest of Beginnings'
+  ('a1a1b95f-2ef3-4529-9db5-7d531ed2c5fe', 'f9db3037-2e0a-4e72-bc8f-fb325ee1d09b'), -- Goblin en el nivel 'Cave of Despair'
+  ('c7b740e4-0ff9-4635-bd82-dc45128ed233', '26ff3c01-bfdd-47a0-bc0a-87096b5435f7'); -- Dragon en el nivel 'Dragon's Lair'

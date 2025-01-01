@@ -9,6 +9,9 @@ import { UserEquippedEntity } from './entities/user-equiped.entity';
 import { DefenseEntity } from './entities/defense.entity';
 import { UsersModule } from './auth/auth.module';
 import { UserEquipmentModule } from './user-equipment/user-equipment.module';
+import { LevelEntity } from './entities/level.entity';
+import { MobEntity } from './entities/mob.entity';
+import { LevelMob } from './entities/level_has_mobs.entity';
 dotenv.config();
 @Module({
   imports: [
@@ -23,7 +26,14 @@ dotenv.config();
       entities: [UsersEntity, UserEquippedEntity, DefenseEntity],
       synchronize: false,
     }),
-    TypeOrmModule.forFeature([UsersEntity, UserEquippedEntity, DefenseEntity]),
+    TypeOrmModule.forFeature([
+      UsersEntity,
+      UserEquippedEntity,
+      DefenseEntity,
+      LevelEntity,
+      MobEntity,
+      LevelMob,
+    ]),
     UsersModule,
     UserEquipmentModule,
   ],
