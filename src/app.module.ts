@@ -8,6 +8,7 @@ import * as dotenv from 'dotenv';
 import { UserEquippedEntity } from './entities/user-equiped.entity';
 import { DefenseEntity } from './entities/defense.entity';
 import { UsersModule } from './auth/auth.module';
+import { UserEquipmentModule } from './user-equipment/user-equipment.module';
 dotenv.config();
 @Module({
   imports: [
@@ -24,6 +25,7 @@ dotenv.config();
     }),
     TypeOrmModule.forFeature([UsersEntity, UserEquippedEntity, DefenseEntity]),
     UsersModule,
+    UserEquipmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

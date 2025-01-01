@@ -1,6 +1,12 @@
-import { DefenseEntity } from './defense.entity';
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { UsersEntity } from './user.entity';
+import { DefenseEntity, DefenseType } from './defense.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  Column,
+} from 'typeorm';
+import { UsersEntity, UserType } from './user.entity';
 
 @Entity('user_equiped')
 export class UserEquippedEntity {
@@ -16,4 +22,10 @@ export class UserEquippedEntity {
   })
   @JoinColumn({ name: 'defense_id' })
   defense: DefenseEntity;
+
+  @Column({
+    type: 'enum',
+    enum: DefenseType,
+  })
+  type: DefenseType;
 }
