@@ -9,8 +9,8 @@ export enum DefenseType {
 
 @Entity('defense')
 export class DefenseEntity {
-  @PrimaryGeneratedColumn()
-  defense_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  defense_id: string;
 
   @Column()
   name: string;

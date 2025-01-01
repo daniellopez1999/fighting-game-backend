@@ -1,14 +1,14 @@
 import { DefenseEntity } from './defense.entity';
 import { Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { UserEntity } from './user.entity';
+import { UsersEntity } from './user.entity';
 
 @Entity('user_equiped')
 export class UserEquippedEntity {
-  @PrimaryGeneratedColumn()
-  user_equiped_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  user_equiped_id: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.user_id)
-  user: UserEntity;
+  @ManyToOne(() => UsersEntity, (user) => user.user_id)
+  user: UsersEntity;
 
   @ManyToOne(() => DefenseEntity, (defense) => defense.defense_id, {
     nullable: true,

@@ -3,9 +3,12 @@ import { AppController } from './app.controller';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
-import { UserEntity } from './entities/user.entity';
+import { UsersEntity } from './entities/user.entity';
 import { UsersModule } from './users/users.module';
-
+import * as dotenv from 'dotenv';
+import { UserEquippedEntity } from './entities/user-equiped.entity';
+import { DefenseEntity } from './entities/defense.entity';
+dotenv.config();
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -16,10 +19,10 @@ import { UsersModule } from './users/users.module';
       username: `${process.env.DB_PG_USERNAME}`,
       password: `${process.env.DB_PG_PASSWORD}`,
       database: `${process.env.DB_PG_DATABASE_NAME}`,
-      entities: [UserEntity],
+      entities: [UsersEntity],
       synchronize: false,
     }),
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UsersEntity, UserEquippedEntity, DefenseEntity]),
     UsersModule,
   ],
   controllers: [AppController],
