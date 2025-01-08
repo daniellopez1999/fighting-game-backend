@@ -9,6 +9,7 @@ import { UserEquipmentController } from './character-equipment.controller';
 import { characterEquipmentService } from './character-equipment.service';
 import { DefenseRepository } from 'src/repositories/defense.repository';
 import { CharacterEntity } from 'src/entities/character.entity';
+import { AttackEntity } from 'src/entities/attack.entity';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { CharacterEntity } from 'src/entities/character.entity';
       CharacterEquippedEntity,
       DefenseEntity,
       CharacterEntity,
+      AttackEntity,
     ]),
   ],
   controllers: [UserEquipmentController],

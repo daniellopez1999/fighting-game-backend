@@ -75,51 +75,15 @@ VALUES
 -- Creación de la tabla 'character_equiped'
 CREATE TABLE character_equiped (
   character_equiped_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL,
   character_id UUID NOT NULL, -- Añadir esta columna
   defense_id UUID,
   attack_id UUID,
-  defense_type VARCHAR(50) CHECK (defense_type IN ('armor', 'gloves', 'helmet', 'boots')) NOT NULL,
+  defense_type VARCHAR(50) CHECK (defense_type IN ('armor', 'gloves', 'helmet', 'boots')),
+  attack_type VARCHAR(50) CHECK (attack_type IN ('sword', 'axe', 'bow', 'dagger')),
   FOREIGN KEY (character_id) REFERENCES user_characters(character_id) ON DELETE CASCADE,
   FOREIGN KEY (defense_id) REFERENCES defense (defense_id) ON DELETE SET NULL,
   FOREIGN KEY (attack_id) REFERENCES attack (attack_id) ON DELETE SET NULL
-
 );
-
-
-
--- Insertar algunos datos de ejemplo en la tabla 'character_equiped'
--- Necesitamos obtener los UUIDs generados para las tablas de usuarios y defensa, así que se hace una consulta para obtenerlos
-
-WITH inserted_defense AS (
-  SELECT defense_id FROM defense WHERE name = 'Iron Armor' LIMIT 1
-), inserted_user AS (
-  SELECT user_id FROM users WHERE username = 'admin1' LIMIT 1
-)
-INSERT INTO character_equiped (user_id, defense_id)
-SELECT inserted_user.user_id, inserted_defense.defense_id
-FROM inserted_user, inserted_defense;
-
-WITH inserted_defense AS (
-  SELECT defense_id FROM defense WHERE name = 'Leather Gloves' LIMIT 1
-), inserted_user AS (
-  SELECT user_id FROM users WHERE username = 'user1' LIMIT 1
-)
-INSERT INTO character_equiped (user_id, defense_id)
-SELECT inserted_user.user_id, inserted_defense.defense_id
-FROM inserted_user, inserted_defense;
-
-WITH inserted_defense AS (
-  SELECT defense_id FROM defense WHERE name = 'Steel Helmet' LIMIT 1
-), inserted_user AS (
-  SELECT user_id FROM users WHERE username = 'mod1' LIMIT 1
-)
-INSERT INTO character_equiped (user_id, defense_id)
-SELECT inserted_user.user_id, inserted_defense.defense_id
-FROM inserted_user, inserted_defense;
-
-
-
 
 -- 1. Tabla de niveles (levels)
 CREATE TABLE levels (
@@ -185,6 +149,7 @@ VALUES
 
 
 
-
-
+-- ADD USER TEST
+INSERT INTO users (user_id, username, email, password, type)
+values ('fc9a70e6-6846-4042-bb1a-220c3defc875','daniellopez1999','lopezbogazdaniel@gmail.com','$2b$10$dgm8KCDoD8WTF1ndLtNOSeAnGc40cdS.IxC44FVzeH/3S8jUCxMq6','admin');
 

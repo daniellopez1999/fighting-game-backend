@@ -19,11 +19,16 @@ export class CharacterEquippedEntity {
   @JoinColumn({ name: 'character_id' })
   character: CharacterEntity;
 
-  @ManyToOne(() => DefenseEntity, {
-    nullable: true,
-  })
+  @ManyToOne(() => DefenseEntity, { nullable: true })
   @JoinColumn({ name: 'defense_id' })
   defense: DefenseEntity;
+
+  @ManyToOne(() => AttackEntity, { nullable: true })
+  @JoinColumn({ name: 'attack_id' })
+  attack: AttackEntity;
+
+  @Column({ nullable: true, type: 'enum', enum: AttackType })
+  attack_type: AttackType;
 
   @Column({
     type: 'enum',
@@ -31,13 +36,4 @@ export class CharacterEquippedEntity {
     nullable: true,
   })
   defense_type: DefenseType;
-
-  @ManyToOne(() => AttackEntity, {
-    nullable: true,
-  })
-  @JoinColumn({ name: 'attack_id' })
-  attack: AttackEntity;
-
-  @Column({ nullable: true, type: 'enum', enum: AttackType })
-  attack_type: AttackType;
 }

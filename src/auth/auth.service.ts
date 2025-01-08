@@ -45,7 +45,6 @@ export class UsersService {
       }
 
       const user = await this.userRepository.createUser(createUserDto);
-      await this.CharacterEquipRepository.createUserEquip(user.user_id);
 
       const temporalURL = generateUrlWithEncryptedToken(user.user_id);
 

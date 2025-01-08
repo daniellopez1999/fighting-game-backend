@@ -14,6 +14,7 @@ import { MobEntity } from './entities/mob.entity';
 import { LevelMob } from './entities/level_has_mobs.entity';
 import { CharacterEntity } from './entities/character.entity';
 import { AttackEntity } from './entities/attack.entity';
+import { CharacterModule } from './character/character.module';
 dotenv.config();
 @Module({
   imports: [
@@ -45,9 +46,11 @@ dotenv.config();
       MobEntity,
       LevelMob,
       CharacterEntity,
+      AttackEntity,
     ]),
     UsersModule,
     CharacterEquipmentModule,
+    CharacterModule,
   ],
   controllers: [AppController],
   providers: [AppService],

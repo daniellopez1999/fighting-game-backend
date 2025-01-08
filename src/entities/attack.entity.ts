@@ -30,7 +30,7 @@ export class AttackEntity {
   attack_type: AttackType;
 
   @Column()
-  attack: number;
+  damage: number;
 
   @Column()
   agility: number;

@@ -8,14 +8,14 @@ import {
 
 import { UsersEntity } from './user.entity';
 
-enum CharacterClass {
+export enum CharacterClass {
   Warrior = 'warrior',
   Archer = 'archer',
   Mage = 'mage',
   Assassin = 'assassin',
 }
 
-@Entity('characters')
+@Entity('user_characters')
 export class CharacterEntity {
   @PrimaryGeneratedColumn('uuid')
   character_id: string;
