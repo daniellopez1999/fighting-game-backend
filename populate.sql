@@ -144,3 +144,38 @@ VALUES
   ('e86b6ed2-c317-47e3-b43b-4bb89c3f3dbb', 'f9db3037-2e0a-4e72-bc8f-fb325ee1d09b'), -- Goblin en el nivel 'Forest of Beginnings'
   ('a1a1b95f-2ef3-4529-9db5-7d531ed2c5fe', 'f9db3037-2e0a-4e72-bc8f-fb325ee1d09b'), -- Goblin en el nivel 'Cave of Despair'
   ('c7b740e4-0ff9-4635-bd82-dc45128ed233', '26ff3c01-bfdd-47a0-bc0a-87096b5435f7'); -- Dragon en el nivel 'Dragon's Lair'
+
+
+-- Creación de la tabla 'attack'
+CREATE TABLE attack (
+  attack_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(255) NOT NULL,
+  attack_type VARCHAR(50) CHECK (attack_type IN ('sword', 'axe', 'bow', 'dagger')) NOT NULL,
+  damage INT NOT NULL,
+  agility INT NOT NULL,
+  attack_speed INT NOT NULL,
+  image VARCHAR(255) NOT NULL
+);
+
+INSERT INTO attack (attack_id, name, attack_type, damage, agility, attack_speed, image)
+VALUES
+('1a2b3c4d-5e6f-7890-abcd-ef1234567890', 'Sword of Flames', 'sword', 50, 5, 10, 'sword.png'),
+('2b3c4d5e-6f7a-8901-bcde-f12345678901', 'Axe of Fury', 'axe', 60, 3, 8, 'axe.png'),
+('3c4d5e6f-7a8b-9012-cdef-123456789012', 'Bow of Precision', 'bow', 40, 7, 12, 'bow.png'),
+('4d5e6f7a-8b9c-0123-def1-234567890123', 'Dagger of Speed', 'dagger', 30, 10, 15, 'dagger.png');
+
+
+-- Creación de la tabla 'characters'
+CREATE TABLE characters (
+  character_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL,
+  name VARCHAR(255) UNIQUE NOT NULL,
+  type VARCHAR(50) CHECK (type IN ('warrior', 'archer', 'mage', 'assassin')) NOT NULL,
+  attack INT NOT NULL,
+  defense INT NOT NULL,
+  health INT NOT NULL,
+  attack_speed INT NOT NULL,
+  agility INT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
