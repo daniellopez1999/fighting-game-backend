@@ -7,6 +7,7 @@ import {
   Column,
 } from 'typeorm';
 import { UsersEntity, UserType } from './user.entity';
+import { AttackType } from './attack.entity';
 
 @Entity('user_equiped')
 export class UserEquippedEntity {
@@ -26,6 +27,10 @@ export class UserEquippedEntity {
   @Column({
     type: 'enum',
     enum: DefenseType,
+    nullable: true,
   })
-  type: DefenseType;
+  defense_type: DefenseType;
+
+  @Column({ nullable: true, type: 'enum', enum: AttackType })
+  attack_type: AttackType;
 }

@@ -19,7 +19,7 @@ export class DefenseEntity {
     type: 'enum',
     enum: DefenseType,
   })
-  type: DefenseType;
+  defense_type: DefenseType;
 
   @Column()
   defense: number;

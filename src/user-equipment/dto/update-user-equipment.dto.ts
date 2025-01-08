@@ -13,5 +13,5 @@ export class UpdateUserEquipmentDto {
   defense_id: string;
   @IsEnum(DefenseType)
   @IsNotEmpty()
-  type: DefenseType;
+  defense_type: DefenseType;
 }

@@ -5,7 +5,7 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE TABLE defense (
   defense_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(255) NOT NULL,
-  type VARCHAR(50) CHECK (type IN ('armor', 'gloves', 'helmet', 'boots')) NOT NULL,
+  defense_type VARCHAR(50) CHECK (defense_type IN ('armor', 'gloves', 'helmet', 'boots')) NOT NULL,
   defense INT NOT NULL,
   agility INT NOT NULL,
   attack_speed INT NOT NULL
@@ -25,13 +25,13 @@ CREATE TABLE user_equiped (
   user_equiped_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL,
   defense_id UUID,
-  type VARCHAR(50) CHECK (type IN ('armor', 'gloves', 'helmet', 'boots')) NOT NULL,
+  defense_type VARCHAR(50) CHECK (defense_type IN ('armor', 'gloves', 'helmet', 'boots')) NOT NULL,
   FOREIGN KEY (user_id) REFERENCES "users" (user_id) ON DELETE CASCADE,
   FOREIGN KEY (defense_id) REFERENCES defense (defense_id) ON DELETE SET NULL
 );
 
 -- Insertar algunos datos de ejemplo en la tabla 'defense'
-INSERT INTO defense (defense_id, name, type, defense, agility, attack_speed)
+INSERT INTO defense (defense_id, name, defense_type, defense, agility, attack_speed)
 VALUES
   ('4dbc3d24-bdee-4a43-b2e5-42556a472e35', 'Iron Armor', 'armor', 50, 0, 0),
   ('8b1c6e7e-b517-496b-bf88-b9f45cf07d98', 'Leather Gloves', 'gloves', 10, 5, 5),
@@ -96,8 +96,15 @@ CREATE TABLE mobs (
   mob_id UUID PRIMARY KEY,         -- Identificador único del mob
   name VARCHAR(255),               -- Nombre del mob
   health INT,                      -- Salud del mob
-  damage INT                       -- Daño del mob
+  damage INT,                      -- Daño del mob
+  defense INT,                     -- Defensa del mob
+  experience INT,                  -- Experiencia otorgada por el mob
+  image VARCHAR(255),              -- Imagen del mob
+  gold INT,                        -- Oro otorgado por el mob
+  type VARCHAR(50) CHECK (type IN ('normal', 'boss')), -- Tipo de mob
+  element VARCHAR(50) CHECK (element IN ('fire', 'water', 'earth', 'wind')) -- Elemento del mob
 );
+
 
 -- 3. Relación entre niveles y mobs (tabla intermedia)
 CREATE TABLE level_mobs (
@@ -115,11 +122,21 @@ VALUES
   ('c7b740e4-0ff9-4635-bd82-dc45128ed233', 'Dragon Lair', 'hard');
 
 -- Insertar mobs
-INSERT INTO mobs (mob_id, name, health, damage)
+INSERT INTO mobs (mob_id, name, health, damage, defense, experience, image, gold, type, element)
 VALUES
-  ('f9db3037-2e0a-4e72-bc8f-fb325ee1d09b', 'Goblin', 30, 5),
-  ('eb92b764-13bb-4199-b5ac-e51d395b2a75', 'Troll', 100, 15),
-  ('26ff3c01-bfdd-47a0-bc0a-87096b5435f7', 'Dragon', 500, 50);
+  ('f9db3037-2e0a-4e72-bc8f-fb325ee1d09b', 'Goblin', 30, 5, 2, 10, 'goblin.png', 5, 'normal', 'earth'),
+  ('eb92b764-13bb-4199-b5ac-e51d395b2a75', 'Troll', 100, 15, 10, 50, 'troll.png', 20, 'normal', 'earth'),
+  ('26ff3c01-bfdd-47a0-bc0a-87096b5435f7', 'Dragon', 500, 50, 25, 200, 'dragon.png', 100, 'boss', 'fire'),
+  ('a1b2c3d4-e5f6-7890-abcd-ef1234567890', 'Orc', 80, 10, 5, 40, 'orc.png', 15, 'normal', 'earth'),
+  ('b2c3d4e5-f6a7-8901-bcde-f12345678901', 'Golem', 200, 20, 15, 100, 'golem.png', 50, 'boss', 'earth'),
+  ('c3d4e5f6-a7b8-9012-cdef-123456789012', 'Phoenix', 150, 25, 10, 120, 'phoenix.png', 60, 'boss', 'fire'),
+  ('d4e5f6a7-b8c9-0123-def1-234567890123', 'Mermaid', 70, 8, 3, 30, 'mermaid.png', 10, 'normal', 'water'),
+  ('e5f6a7b8-c9d0-1234-ef12-345678901234', 'Kraken', 300, 35, 20, 150, 'kraken.png', 80, 'boss', 'water'),
+  ('f6a7b8c9-d0e1-2345-f123-456789012345', 'Cyclops', 120, 18, 8, 60, 'cyclops.png', 25, 'normal', 'earth'),
+  ('a7b8c9d0-e1f2-3456-1234-567890123456', 'Harpy', 60, 12, 4, 25, 'harpy.png', 12, 'normal', 'wind'),
+  ('b8c9d0e1-f2a3-4567-2345-678901234567', 'Griffin', 180, 28, 12, 90, 'griffin.png', 45, 'boss', 'wind'),
+  ('c9d0e1f2-a3b4-5678-3456-789012345678', 'Minotaur', 140, 22, 10, 70, 'minotaur.png', 35, 'normal', 'earth'),
+  ('d0e1f2a3-b4c5-6789-4567-890123456789', 'Hydra', 250, 40, 18, 180, 'hydra.png', 90, 'boss', 'water'); 
 
 -- Relacionar niveles con mobs
 INSERT INTO level_mobs (level_id, mob_id)

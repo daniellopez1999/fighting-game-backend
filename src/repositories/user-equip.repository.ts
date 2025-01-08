@@ -19,22 +19,22 @@ export class UserEquipRepository {
       {
         user: { user_id },
         defense: { defense_id: '4dbc3d24-bdee-4a43-b2e5-42556a472e35' },
-        type: DefenseType.ARMOR,
+        defense_type: DefenseType.ARMOR,
       },
       {
         user: { user_id },
         defense: { defense_id: '5fcf95f0-d0ea-46d8-9443-94c9aef2f034' },
-        type: DefenseType.BOOTS,
+        defense_type: DefenseType.BOOTS,
       },
       {
         user: { user_id },
         defense: { defense_id: '8b1c6e7e-b517-496b-bf88-b9f45cf07d98' },
-        type: DefenseType.GLOVES,
+        defense_type: DefenseType.GLOVES,
       },
       {
         user: { user_id },
         defense: { defense_id: 'b9b7bc31-76b4-42b7-a612-dc83616b4bb2' },
-        type: DefenseType.HELMET,
+        defense_type: DefenseType.HELMET,
       },
     ]);
   }
