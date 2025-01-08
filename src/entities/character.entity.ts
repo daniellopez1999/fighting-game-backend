@@ -22,7 +22,10 @@ export class CharacterEntity {
   name: string;
 
   @Column()
-  type: 'warrior' | 'archer' | 'mage' | 'assassin';
+  class: 'warrior' | 'archer' | 'mage' | 'assassin';
+
+  @Column()
+  level: number;
 
   @Column()
   attack: number;
