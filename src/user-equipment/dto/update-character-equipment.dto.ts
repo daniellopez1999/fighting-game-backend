@@ -4,7 +4,7 @@ import { DefenseType } from 'src/entities/defense.entity';
 export class UpdateUserEquipmentDto {
   @IsUUID()
   @IsNotEmpty()
-  user_equiped_id: string;
+  character_equiped_id: string;
   @IsUUID()
   @IsNotEmpty()
   user_id: string;

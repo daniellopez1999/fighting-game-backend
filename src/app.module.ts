@@ -5,13 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
 import { UsersEntity } from './entities/user.entity';
 import * as dotenv from 'dotenv';
-import { UserEquippedEntity } from './entities/user-equiped.entity';
+import { CharacterEquippedEntity } from './entities/character-equiped.entity';
 import { DefenseEntity } from './entities/defense.entity';
 import { UsersModule } from './auth/auth.module';
-import { UserEquipmentModule } from './user-equipment/user-equipment.module';
+import { CharacterEquipmentModule } from './user-equipment/character-equipment.module';
 import { LevelEntity } from './entities/level.entity';
 import { MobEntity } from './entities/mob.entity';
 import { LevelMob } from './entities/level_has_mobs.entity';
+import { CharacterEntity } from './entities/character.entity';
+import { AttackEntity } from './entities/attack.entity';
 dotenv.config();
 @Module({
   imports: [
@@ -23,19 +25,29 @@ dotenv.config();
       username: `${process.env.DB_PG_USERNAME}`,
       password: `${process.env.DB_PG_PASSWORD}`,
       database: `${process.env.DB_PG_DATABASE_NAME}`,
-      entities: [UsersEntity, UserEquippedEntity, DefenseEntity],
+      entities: [
+        UsersEntity,
+        CharacterEquippedEntity,
+        DefenseEntity,
+        CharacterEntity,
+        AttackEntity,
+        LevelEntity,
+        MobEntity,
+        LevelMob,
+      ],
       synchronize: false,
     }),
     TypeOrmModule.forFeature([
       UsersEntity,
-      UserEquippedEntity,
+      CharacterEquippedEntity,
       DefenseEntity,
       LevelEntity,
       MobEntity,
       LevelMob,
+      CharacterEntity,
     ]),
     UsersModule,
-    UserEquipmentModule,
+    CharacterEquipmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

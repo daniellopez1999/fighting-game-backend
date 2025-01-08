@@ -7,7 +7,15 @@ import {
 } from 'typeorm';
 
 import { UsersEntity } from './user.entity';
-@Entity()
+
+enum CharacterClass {
+  Warrior = 'warrior',
+  Archer = 'archer',
+  Mage = 'mage',
+  Assassin = 'assassin',
+}
+
+@Entity('characters')
 export class CharacterEntity {
   @PrimaryGeneratedColumn('uuid')
   character_id: string;
@@ -21,8 +29,8 @@ export class CharacterEntity {
   @Column({ unique: true })
   name: string;
 
-  @Column()
-  class: 'warrior' | 'archer' | 'mage' | 'assassin';
+  @Column({ enum: CharacterClass })
+  class: CharacterClass;
 
   @Column()
   level: number;

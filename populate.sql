@@ -20,14 +20,19 @@ CREATE TABLE users (
   type VARCHAR(50) CHECK (type IN ('admin', 'user', 'mod')) NOT NULL
 );
 
--- Creación de la tabla 'user_equiped'
-CREATE TABLE user_equiped (
-  user_equiped_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+-- Creación de la tabla 'characters'
+CREATE TABLE user_characters (
+  character_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL,
-  defense_id UUID,
-  defense_type VARCHAR(50) CHECK (defense_type IN ('armor', 'gloves', 'helmet', 'boots')) NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES "users" (user_id) ON DELETE CASCADE,
-  FOREIGN KEY (defense_id) REFERENCES defense (defense_id) ON DELETE SET NULL
+  name VARCHAR(255) UNIQUE NOT NULL,
+  class VARCHAR(50) CHECK (class IN ('warrior', 'archer', 'mage', 'assassin')) NOT NULL,
+  level INT NOT NULL,
+  attack INT NOT NULL,
+  defense INT NOT NULL,
+  health INT NOT NULL,
+  attack_speed INT NOT NULL,
+  agility INT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 -- Insertar algunos datos de ejemplo en la tabla 'defense'
@@ -48,9 +53,42 @@ VALUES
   ('af66d8b1-ff65-408f-a431-9a973e1c07e2', 'Golden Shield', 'armor', 70, 2, 0),
   ('71c6f1a5-3a74-4267-94f1-88fa00d73c9b', 'Diamond Shield', 'armor', 90, 3, 0);
 
+-- Creación de la tabla 'attack'
+CREATE TABLE attack (
+  attack_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(255) NOT NULL,
+  attack_type VARCHAR(50) CHECK (attack_type IN ('sword', 'axe', 'bow', 'dagger')) NOT NULL,
+  damage INT NOT NULL,
+  agility INT NOT NULL,
+  attack_speed INT NOT NULL,
+  image VARCHAR(255) NOT NULL
+);
+
+INSERT INTO attack (attack_id, name, attack_type, damage, agility, attack_speed, image)
+VALUES
+('1a2b3c4d-5e6f-7890-abcd-ef1234567890', 'Sword of Flames', 'sword', 50, 5, 10, 'sword.png'),
+('2b3c4d5e-6f7a-8901-bcde-f12345678901', 'Axe of Fury', 'axe', 60, 3, 8, 'axe.png'),
+('3c4d5e6f-7a8b-9012-cdef-123456789012', 'Bow of Precision', 'bow', 40, 7, 12, 'bow.png'),
+('4d5e6f7a-8b9c-0123-def1-234567890123', 'Dagger of Speed', 'dagger', 30, 10, 15, 'dagger.png');
 
 
--- Insertar algunos datos de ejemplo en la tabla 'user_equiped'
+-- Creación de la tabla 'character_equiped'
+CREATE TABLE character_equiped (
+  character_equiped_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL,
+  character_id UUID NOT NULL, -- Añadir esta columna
+  defense_id UUID,
+  attack_id UUID,
+  defense_type VARCHAR(50) CHECK (defense_type IN ('armor', 'gloves', 'helmet', 'boots')) NOT NULL,
+  FOREIGN KEY (character_id) REFERENCES user_characters(character_id) ON DELETE CASCADE,
+  FOREIGN KEY (defense_id) REFERENCES defense (defense_id) ON DELETE SET NULL,
+  FOREIGN KEY (attack_id) REFERENCES attack (attack_id) ON DELETE SET NULL
+
+);
+
+
+
+-- Insertar algunos datos de ejemplo en la tabla 'character_equiped'
 -- Necesitamos obtener los UUIDs generados para las tablas de usuarios y defensa, así que se hace una consulta para obtenerlos
 
 WITH inserted_defense AS (
@@ -58,7 +96,7 @@ WITH inserted_defense AS (
 ), inserted_user AS (
   SELECT user_id FROM users WHERE username = 'admin1' LIMIT 1
 )
-INSERT INTO user_equiped (user_id, defense_id)
+INSERT INTO character_equiped (user_id, defense_id)
 SELECT inserted_user.user_id, inserted_defense.defense_id
 FROM inserted_user, inserted_defense;
 
@@ -67,7 +105,7 @@ WITH inserted_defense AS (
 ), inserted_user AS (
   SELECT user_id FROM users WHERE username = 'user1' LIMIT 1
 )
-INSERT INTO user_equiped (user_id, defense_id)
+INSERT INTO character_equiped (user_id, defense_id)
 SELECT inserted_user.user_id, inserted_defense.defense_id
 FROM inserted_user, inserted_defense;
 
@@ -76,7 +114,7 @@ WITH inserted_defense AS (
 ), inserted_user AS (
   SELECT user_id FROM users WHERE username = 'mod1' LIMIT 1
 )
-INSERT INTO user_equiped (user_id, defense_id)
+INSERT INTO character_equiped (user_id, defense_id)
 SELECT inserted_user.user_id, inserted_defense.defense_id
 FROM inserted_user, inserted_defense;
 
@@ -146,37 +184,7 @@ VALUES
   ('c7b740e4-0ff9-4635-bd82-dc45128ed233', '26ff3c01-bfdd-47a0-bc0a-87096b5435f7'); -- Dragon en el nivel 'Dragon's Lair'
 
 
--- Creación de la tabla 'attack'
-CREATE TABLE attack (
-  attack_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name VARCHAR(255) NOT NULL,
-  attack_type VARCHAR(50) CHECK (attack_type IN ('sword', 'axe', 'bow', 'dagger')) NOT NULL,
-  damage INT NOT NULL,
-  agility INT NOT NULL,
-  attack_speed INT NOT NULL,
-  image VARCHAR(255) NOT NULL
-);
-
-INSERT INTO attack (attack_id, name, attack_type, damage, agility, attack_speed, image)
-VALUES
-('1a2b3c4d-5e6f-7890-abcd-ef1234567890', 'Sword of Flames', 'sword', 50, 5, 10, 'sword.png'),
-('2b3c4d5e-6f7a-8901-bcde-f12345678901', 'Axe of Fury', 'axe', 60, 3, 8, 'axe.png'),
-('3c4d5e6f-7a8b-9012-cdef-123456789012', 'Bow of Precision', 'bow', 40, 7, 12, 'bow.png'),
-('4d5e6f7a-8b9c-0123-def1-234567890123', 'Dagger of Speed', 'dagger', 30, 10, 15, 'dagger.png');
 
 
--- Creación de la tabla 'characters'
-CREATE TABLE characters (
-  character_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL,
-  name VARCHAR(255) UNIQUE NOT NULL,
-  class VARCHAR(50) CHECK (class IN ('warrior', 'archer', 'mage', 'assassin')) NOT NULL,
-  level INT NOT NULL,
-  attack INT NOT NULL,
-  defense INT NOT NULL,
-  health INT NOT NULL,
-  attack_speed INT NOT NULL,
-  agility INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
-);
+
 

@@ -1,21 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DefenseEntity, DefenseType } from 'src/entities/defense.entity';
-import { UserEquippedEntity } from 'src/entities/user-equiped.entity';
+import { CharacterEquippedEntity } from 'src/entities/character-equiped.entity';
 import { Equal, Repository } from 'typeorm';
 import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
 @Injectable()
-export class UserEquipRepository {
+export class CharacterEquipRepository {
   constructor(
-    @InjectRepository(UserEquippedEntity)
-    private readonly userEquipRepository: Repository<UserEquippedEntity>,
+    @InjectRepository(CharacterEquippedEntity)
+    private readonly CharacterEquipRepository: Repository<CharacterEquippedEntity>,
     @InjectRepository(DefenseEntity)
     private readonly defenseRepository: Repository<DefenseEntity>,
   ) {}
 
   async createUserEquip(user_id: string) {
-    return await this.userEquipRepository.save([
+    return await this.CharacterEquipRepository.save([
       {
         user: { user_id },
         defense: { defense_id: '4dbc3d24-bdee-4a43-b2e5-42556a472e35' },
@@ -39,21 +39,21 @@ export class UserEquipRepository {
     ]);
   }
 
-  async findUserEquipmentByID(user_equiped_id: string) {
-    return await this.userEquipRepository.findOne({
-      where: { user_equiped_id },
+  async findUserEquipmentByID(character_equiped_id: string) {
+    return await this.CharacterEquipRepository.findOne({
+      where: { character_equiped_id },
       relations: ['defense'],
     });
   }
 
-  async updateUserEquip(userEquip: UserEquippedEntity) {
-    return await this.userEquipRepository.save(userEquip);
+  async updateUserEquip(userEquip: CharacterEquippedEntity) {
+    return await this.CharacterEquipRepository.save(userEquip);
   }
 
-  async findByUserID(user_id: string) {
-    return await this.userEquipRepository.find({
-      where: { user: { user_id } },
-      relations: ['defense'],
+  async findByCharacterID(character_id: string) {
+    return await this.CharacterEquipRepository.find({
+      where: { character: { character_id } },
+      relations: ['defense', 'character.user'],
     });
   }
 }

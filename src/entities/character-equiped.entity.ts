@@ -7,16 +7,17 @@ import {
   Column,
 } from 'typeorm';
 import { UsersEntity, UserType } from './user.entity';
-import { AttackType } from './attack.entity';
+import { AttackEntity, AttackType } from './attack.entity';
+import { CharacterEntity } from './character.entity';
 
-@Entity('user_equiped')
-export class UserEquippedEntity {
+@Entity('character_equiped')
+export class CharacterEquippedEntity {
   @PrimaryGeneratedColumn('uuid')
-  user_equiped_id: string;
+  character_equiped_id: string;
 
-  @ManyToOne(() => UsersEntity)
-  @JoinColumn({ name: 'user_id' })
-  user: UsersEntity;
+  @ManyToOne(() => CharacterEntity, (character) => character.character_id)
+  @JoinColumn({ name: 'character_id' })
+  character: CharacterEntity;
 
   @ManyToOne(() => DefenseEntity, {
     nullable: true,
@@ -30,6 +31,12 @@ export class UserEquippedEntity {
     nullable: true,
   })
   defense_type: DefenseType;
+
+  @ManyToOne(() => AttackEntity, {
+    nullable: true,
+  })
+  @JoinColumn({ name: 'attack_id' })
+  attack: AttackEntity;
 
   @Column({ nullable: true, type: 'enum', enum: AttackType })
   attack_type: AttackType;
